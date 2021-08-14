@@ -263,6 +263,14 @@ class App {
     });
   };
 
+  reset() {
+    localStorage.removeItem('workouts');
+    location.reload();
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // app.reset() in the console will clear the workouts localStorage data
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  };
+
 };
 
 const app = new App();
