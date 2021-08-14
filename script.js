@@ -68,6 +68,9 @@ class App {
 
   constructor() {
     this._getPosition();
+
+    this._getLocalStorage();
+
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
@@ -92,6 +95,10 @@ class App {
       }).addTo(this.#map);
       
       this.#map.on('click', this._showForm.bind(this));
+
+      this.#workouts.forEach(workout => {
+        this._renderWorkoutMarker(workout);
+      });
   };
 
   _showForm(mapClickEvent) {
@@ -156,6 +163,8 @@ class App {
     this._renderWorkout(workout);
 
     this._hideForm();
+
+    this._setLocalStorage();
   };
 
   _renderWorkoutMarker(workout) {
@@ -205,7 +214,7 @@ class App {
           </div>
         </li>
       `
-    }
+    };
 
     if(workout.type === 'cycling') {
       html += `
@@ -221,7 +230,7 @@ class App {
           </div>
         </li> 
       `
-    }
+    };
     form.insertAdjacentHTML('afterend', html);
   };
 
@@ -237,6 +246,23 @@ class App {
       }
     });
   };
-}
+
+  _setLocalStorage() {
+    localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+  };
+
+  _getLocalStorage() {
+    const data = JSON.parse(localStorage.getItem('workouts'));
+
+    if(!data) return;
+
+    this.#workouts = data;
+
+    this.#workouts.forEach(workout => {
+      this._renderWorkout(workout);
+    });
+  };
+
+};
 
 const app = new App();
